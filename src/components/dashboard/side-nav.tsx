@@ -1,7 +1,7 @@
 import AcmeLogo from "@/components/shared/AcmeLogo";
-import { Power } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import NavLinks from "@/components/dashboard/nav-links";
+import Link from "next/link";
+import { Power } from "lucide-react";
 
 export default function SideNav() {
   return (
@@ -13,13 +13,13 @@ export default function SideNav() {
         <ul className="flex flex-1 flex-col gap-3">
           <NavLinks />
         </ul>
-        <Button
-          className="flex items-center gap-3 rounded-full border bg-white text-black hover:border-red-600 hover:bg-red-600 hover:text-white"
-          variant="default"
+        <Link
+          className="flex items-center justify-between rounded-full border bg-white px-6 py-3  text-black animate-in hover:border-red-500 hover:bg-red-500 hover:text-white"
+          href="/sign-out"
         >
-          <Power size={16} />
-          <p className="text-lg">Sign Out</p>
-        </Button>
+          <p>Sign Out</p>
+          <Power />
+        </Link>
       </nav>
     </aside>
   );

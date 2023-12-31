@@ -1,14 +1,14 @@
 "use server";
-import { randomUUID } from "crypto";
 import { revalidatePath } from "next/cache";
+import { randomUUID } from "crypto";
 import { eq } from "drizzle-orm";
+// UTILS
+import { db } from "@/server/db";
 // SCHEMA
 import { customers } from "@/server/db/schema";
 import { customerSchema, customerIDSchema } from "@/lib/schema";
 // TYPES
 import type { CustomerType, FormFieldErrorsType } from "@/lib/types";
-// UTILS
-import { db } from "@/server/db";
 
 const createCustomer = async (customerData: CustomerType) => {
   const validatedFormData = customerSchema.safeParse(customerData);
