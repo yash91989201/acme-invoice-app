@@ -27,7 +27,7 @@ export default function ProviderSignInButton({
   return (
     <Button
       key={provider.id}
-      variant="secondary"
+      variant="outline"
       className="flex items-center justify-center gap-3 p-3"
       onClick={signInUser}
       disabled={isSigningIn}

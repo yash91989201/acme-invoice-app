@@ -1,5 +1,6 @@
-import {Globe} from "lucide-react"
-import { lusitana } from '@/fonts';
+import { lusitana } from "@/fonts";
+// ICONS
+import { Globe } from "lucide-react";
 
 export default function AcmeLogo() {
   return (

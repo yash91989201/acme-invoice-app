@@ -1,10 +1,13 @@
-import AcmeLogo from "@/components/shared/AcmeLogo";
-import { Button } from "@/components/ui/button";
-import { getServerAuthSession } from "@/server/auth";
-import { LogIn } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
+import Image from "next/image";
 import { redirect } from "next/navigation";
+// UTILS
+import { getServerAuthSession } from "@/server/auth";
+// CUSTOM COMPONENTS
+import { Button } from "@/components/ui/button";
+import AcmeLogo from "@/components/shared/AcmeLogo";
+// ICONS
+import { LogIn } from "lucide-react";
 
 export default async function Home() {
   const session = await getServerAuthSession();

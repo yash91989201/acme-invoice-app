@@ -1,5 +1,3 @@
-// Example model schema from the Drizzle docs
-// https://orm.drizzle.team/docs/sql-schema-declaration
 import { relations, sql } from "drizzle-orm";
 import {
   int,
@@ -20,7 +18,7 @@ export const mysqlTable = mysqlTableCreator(
 
 export const users = mysqlTable("user", {
   id: varchar("id", { length: 255 }).notNull().primaryKey(),
-  name: varchar("name", { length: 255 }),
+  name: varchar("name", { length: 255 }).notNull(),
   email: varchar("email", { length: 255 }).notNull(),
   emailVerified: timestamp("emailVerified", {
     mode: "date",
@@ -29,22 +27,31 @@ export const users = mysqlTable("user", {
   image: varchar("image", { length: 255 }),
 });
 
-export const customers = mysqlTable("customer", {
-  id: varchar("id", { length: 255 }).notNull().primaryKey(),
-  name: varchar("name", { length: 255 }),
-  email: varchar("email", { length: 255 }).notNull(),
-  image: varchar("image", { length: 255 }),
-});
+export const customers = mysqlTable(
+  "customer",
+  {
+    id: varchar("id", { length: 255 }).notNull().primaryKey(),
+    name: varchar("name", { length: 255 }).notNull(),
+    email: varchar("email", { length: 255 }).notNull(),
+    image: varchar("image", { length: 255 }).notNull(),
+  },
+  (table) => {
+    return {
+      nameIdx: index("name_idx").on(table.name),
+    };
+  },
+);
 
 export const customersRelations = relations(customers, ({ many }) => ({
   invoices: many(invoices),
 }));
 
 export const invoices = mysqlTable("invoice", {
-  customer_id: varchar("id", { length: 255 }).notNull().primaryKey(),
-  amount: int("amount"),
-  status: mysqlEnum("status", ["pending", "paid"]),
-  date: date("date"),
+  id: varchar("id", { length: 255 }).notNull().primaryKey(),
+  customer_id: varchar("customer_id", { length: 255 }).notNull(),
+  amount: int("amount").notNull(),
+  status: mysqlEnum("status", ["pending", "paid"]).notNull(),
+  date: date("date").notNull(),
 });
 
 export const invoicesRelations = relations(invoices, ({ one }) => ({
@@ -69,8 +76,8 @@ export const revenue = mysqlTable("renvenue", {
     "OCT",
     "NOV",
     "DEC",
-  ]),
-  revenue: int("revenue"),
+  ]).notNull(),
+  revenue: int("revenue").notNull(),
 });
 
 export const usersRelations = relations(users, ({ many }) => ({

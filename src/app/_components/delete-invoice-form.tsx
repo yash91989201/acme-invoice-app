@@ -2,20 +2,20 @@
 import { useFormStatus } from "react-dom";
 import { toast } from "sonner";
 // ACTIONS
-import { deleteCustomer } from "@/server/actions/customer";
+import { deleteInvoice } from "@/server/actions/invoice";
 // TYPES
-import type { DeleteCustomerType } from "@/lib/schema";
+import type { DeleteInvoiceType } from "@/lib/schema";
 // CUSTOM COMPONENTS
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 // ICONS
 import { Loader2, Trash } from "lucide-react";
 
-export default function DeleteCustomerForm({ id }: DeleteCustomerType) {
+export default function DeleteInvoiceForm({ id }: DeleteInvoiceType) {
   const deleteCustomerAction = async (formData: FormData) => {
-    const actionResponse = (await deleteCustomer(
+    const actionResponse = (await deleteInvoice(
       formData,
-    )) as DeleteCustomerFormStatusType;
+    )) as DeleteInvoiceFormStatusType;
     switch (actionResponse.status) {
       case "SUCCESS": {
         toast.warning(actionResponse.message);
@@ -31,12 +31,12 @@ export default function DeleteCustomerForm({ id }: DeleteCustomerType) {
   return (
     <form action={deleteCustomerAction} className="w-full">
       <Input className="hidden" name="id" value={id} readOnly />
-      <DeleteCustomerButton />
+      <DeleteInvoiceButton />
     </form>
   );
 }
 
-const DeleteCustomerButton = () => {
+const DeleteInvoiceButton = () => {
   const formStatus = useFormStatus();
   return (
     <Button

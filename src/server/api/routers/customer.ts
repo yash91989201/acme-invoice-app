@@ -1,26 +1,27 @@
 import { z } from "zod";
-
+import { eq, like } from "drizzle-orm";
+// UTILS
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
+// SCHEMAS
+import { CustomerSchema, DeleteCustomerSchema } from "@/lib/schema";
 import { customers } from "@/server/db/schema";
-import { eq } from "drizzle-orm";
 
 const customerRouter = createTRPCRouter({
   create: publicProcedure
-    .input(
-      z.object({
-        id: z.string(),
-        name: z.string(),
-        email: z.string().email(),
-        image: z.string(),
-      }),
-    )
+    .input(CustomerSchema)
     .mutation(async ({ ctx, input }) => {
       await ctx.db.insert(customers).values({ ...input });
     }),
 
-  getAll: publicProcedure.query(({ ctx }) => {
-    return ctx.db.query.customers.findMany();
-  }),
+  getAll: publicProcedure
+    .input(z.object({ query: z.string().optional().default("") }))
+    .query(({ ctx, input }) => {
+      if (input.query.length === 0) return ctx.db.query.customers.findMany();
+
+      return ctx.db.query.customers.findMany({
+        where: like(customers.name, `%${input.query?.toLowerCase()}%`),
+      });
+    }),
 
   getById: publicProcedure
     .input(z.object({ id: z.string() }))
@@ -31,14 +32,7 @@ const customerRouter = createTRPCRouter({
     }),
 
   update: publicProcedure
-    .input(
-      z.object({
-        id: z.string(),
-        name: z.string(),
-        email: z.string().email(),
-        image: z.string(),
-      }),
-    )
+    .input(CustomerSchema)
     .mutation(async ({ ctx, input }) => {
       await ctx.db
         .update(customers)
@@ -47,7 +41,7 @@ const customerRouter = createTRPCRouter({
     }),
 
   delete: publicProcedure
-    .input(z.object({ id: z.string() }))
+    .input(DeleteCustomerSchema)
     .mutation(async ({ ctx, input }) => {
       await ctx.db.delete(customers).where(eq(customers.id, input.id));
     }),

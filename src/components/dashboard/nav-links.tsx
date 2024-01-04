@@ -1,9 +1,8 @@
 "use client";
-
-import React from "react";
-import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { dashboardNavList } from "@/components/dashboard/data";
+import { usePathname } from "next/navigation";
+// ICONS
+import { BookOpen, Home, Users } from "lucide-react";
 
 export default function NavLinks() {
   const currentRoute = usePathname();
@@ -14,17 +13,35 @@ export default function NavLinks() {
         <li key={index}>
           <Link
             href={nav.href}
-            className={`flex w-full items-center justify-start gap-3 rounded-md  p-3 py-2 ${
+            className={`flex w-full items-center  gap-3 rounded-md  p-3 ${
               currentRoute === nav.href
-                ? "bg-blue-200 text-blue-500"
-                : "bg-transparent hover:bg-blue-200 hover:text-blue-500"
+                ? "bg-blue-100 text-blue-600"
+                : "bg-transparent hover:bg-blue-100 hover:text-blue-600"
             }`}
           >
-            <nav.Icon size={18} />
-            <p>{nav.title}</p>
+            <nav.Icon className="size-5" />
+            <p className="hidden md:block">{nav.title}</p>
           </Link>
         </li>
       ))}
     </>
   );
 }
+
+const dashboardNavList = [
+  {
+    href: "/dashboard",
+    Icon: Home,
+    title: "Home",
+  },
+  {
+    href: "/dashboard/invoices",
+    Icon: BookOpen,
+    title: "Invoices",
+  },
+  {
+    href: "/dashboard/customers",
+    Icon: Users,
+    title: "Customers",
+  },
+];

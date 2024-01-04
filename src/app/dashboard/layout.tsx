@@ -1,14 +1,15 @@
-import React from "react";
 // UTILS
 import { getServerAuthSession } from "@/server/auth";
+// TYPES
+import type { ReactNode } from "react";
 // CUSTOM COMPONENTS
-import SideNav from "@/components/dashboard/side-nav";
-import NotSignedInModal from "@/components/dashboard/not-signedin-modal";
+import SideNav from "@/app/_components/side-nav";
+import NotSignedInModal from "@/app/_components/not-signed-in-modal";
 
 export default async function DashboardLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   const session = await getServerAuthSession();
 

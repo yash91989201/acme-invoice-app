@@ -1,9 +1,9 @@
 import "@/styles/globals.css";
-
-import { cookies } from "next/headers";
 import { inter } from "@/fonts";
+import { cookies } from "next/headers";
 import { TRPCReactProvider } from "@/trpc/react";
-import { Toaster } from "@/components/ui/toaster";
+import { Toaster } from "@/components/ui/sonner";
+import { EdgeStoreProvider } from "@/lib/edgestore";
 
 export const metadata = {
   title: "Acme Invoice",
@@ -20,9 +20,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={`font-sans ${inter.variable} antialiased`}>
         <TRPCReactProvider cookies={cookies().toString()}>
-          {children}
+          <EdgeStoreProvider>{children}</EdgeStoreProvider>
         </TRPCReactProvider>
-        <Toaster />
+        <Toaster richColors theme="light" />
       </body>
     </html>
   );

@@ -1,14 +1,15 @@
+import { clsx } from "clsx";
 import dynamic from "next/dynamic";
 import { twMerge } from "tailwind-merge";
 // TYPES
-import type React from "react";
-import { type ClassValue, clsx } from "clsx";
+import type { ClassValue } from "clsx";
+import type { FunctionComponent } from "react";
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-function renderOnClient<T>(Component: React.FunctionComponent<T>) {
+function renderOnClient<T>(Component: FunctionComponent<T>) {
   return dynamic(() => Promise.resolve(Component), { ssr: false });
 }
 

@@ -1,4 +1,4 @@
-type CreateCustomerFormFieldErrorsType = {
+type CustomerFormErrorsType = {
   name?: string;
   email?: string;
   image?: string;
@@ -6,7 +6,7 @@ type CreateCustomerFormFieldErrorsType = {
 
 type CreateCustomerFormInitialType = {
   status: "UNINITIALIZED";
-  errors: CreateCustomerFormFieldErrorsType;
+  errors: CustomerFormErrorsType;
   message: string;
 };
 
@@ -17,16 +17,51 @@ type CreateCustomerFormSuccessType = {
 
 type CreateCustomerFormFailType = {
   status: "FAILED";
-  errors?: FormFieldErrorsType;
+  errors?: CustomerFormErrorsType;
   message: string;
 };
 
-type CreateCustomerFormType =
+type CreateCustomerFormStatusType =
   | CreateCustomerFormInitialType
   | CreateCustomerFormSuccessType
   | CreateCustomerFormFailType;
 
-type DeleteCustomerFormType = {
+type DeleteCustomerFormStatusType = {
   status: "UNINITIALIZED" | "SUCCESS" | "FAILED";
   message: string;
 };
+
+type InvoiceFormErrorsType = {
+  amount?: string;
+  status?: string;
+  date?: string;
+};
+
+type CreateInvoiceFormInitialType = {
+  status: "UNINITIALIZED";
+  errors: InvoiceFormErrorsType;
+  message: string;
+};
+
+type CreateInvoiceFormSuccessType = {
+  status: "SUCCESS";
+  message: string;
+};
+
+type CreateInvoiceFormFailType = {
+  status: "FAILED";
+  errors?: InvoiceFormErrorsType;
+  message: string;
+};
+
+type CreateInvoiceFormStatusType =
+  | CreateInvoiceFormInitialType
+  | CreateInvoiceFormSuccessType
+  | CreateInvoiceFormFailType;
+
+type DeleteInvoiceFormStatusType = {
+  status: "UNINITIALIZED" | "SUCCESS" | "FAILED";
+  message: string;
+};
+
+type ModifyType<T, R> = Omit<T, keyof R> & R;

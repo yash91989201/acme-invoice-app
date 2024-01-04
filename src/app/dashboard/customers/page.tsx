@@ -1,30 +1,40 @@
 // UTILS
 import { api } from "@/trpc/server";
+// TYPES
+import type { CustomerTableColumnType } from "@/lib/data/data-table-column-defs";
 // CUSTOM COMPONENTS
+import CustomerTable from "@/components/ui/data-table";
+import CustomerSearchBox from "@/app/_components/url-search-box";
 import CreateCustomerForm from "@/app/_components/create-customer-form";
-import DeleteCustomerForm from "@/app/_components/delete-customer-form";
+// CONSTANTS
+import { customerTableColumns } from "@/lib/data/data-table-column-defs";
 
-export default async function Customers() {
-  const customers = await api.customer.getAll.query();
+export default async function Customers({
+  searchParams,
+}: {
+  searchParams?: {
+    query?: string;
+  };
+}) {
+  const customerSearchQuery = searchParams?.query ?? "";
+
+  const customers = await api.customer.getAll.query({
+    query: customerSearchQuery,
+  });
 
   return (
-    <>
-      <div className="flex justify-between">
-        <h5 className="text-2xl font-semibold">Customers</h5>
+    <div className="flex flex-col gap-6">
+      <h5 className="text-lg font-semibold md:text-3xl">Customers</h5>
+      <div className="flex items-center gap-3 ">
+        <CustomerSearchBox />
         <CreateCustomerForm />
       </div>
-
       <div>
-        <div>
-          {customers?.map((customer, index) => (
-            <div key={index} className="">
-              <p>{customer.name}</p>
-              <p>{customer.email}</p>
-              <DeleteCustomerForm id={customer.id} />
-            </div>
-          ))}
-        </div>
+        <CustomerTable
+          columns={customerTableColumns}
+          data={customers as CustomerTableColumnType[]}
+        />
       </div>
-    </>
+    </div>
   );
 }

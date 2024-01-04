@@ -1,6 +1,7 @@
+"use client";
 import { useState } from "react";
 
-export default function useToggle(initialValue: boolean) {
+export default function useToggle(initialValue = false) {
   const [state, setState] = useState(initialValue);
 
   const on = () => setState(true);

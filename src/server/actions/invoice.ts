@@ -5,17 +5,17 @@ import { eq } from "drizzle-orm";
 // UTILS
 import { db } from "@/server/db";
 // SCHEMA
-import { customers } from "@/server/db/schema";
 import {
-  CreateCustomerSchema,
-  DeleteCustomerSchema,
-  EditCustomerSchema,
+  CreateInvoiceSchema,
+  EditInvoiceSchema,
+  DeleteInvoiceSchema,
 } from "@/lib/schema";
+import { invoices } from "@/server/db/schema";
 // TYPES
-import type { CreateCustomerType, EditCustomerType } from "@/lib/schema";
+import type { CreateInvoiceType, EditInvoiceType } from "@/lib/schema";
 
-const createCustomer = async (customerData: CreateCustomerType) => {
-  const validatedFormData = CreateCustomerSchema.safeParse(customerData);
+const createInvoice = async (invoiceData: CreateInvoiceType) => {
+  const validatedFormData = CreateInvoiceSchema.safeParse(invoiceData);
 
   if (!validatedFormData.success) {
     let formFieldErrors: CustomerFormErrorsType = {};
@@ -34,20 +34,23 @@ const createCustomer = async (customerData: CreateCustomerType) => {
     };
   }
 
-  const createCustomer = await db.insert(customers).values({
+  const createCustomer = await db.insert(invoices).values({
     id: randomUUID(),
     ...validatedFormData.data,
   });
 
   if (createCustomer.rowsAffected == 0)
-    return { status: "FAILED", message: "Unable to add customer. Try Again!" };
+    return {
+      status: "FAILED",
+      message: "Unable to create invoice. Try Again!",
+    };
 
-  revalidatePath("/dashboard/customers");
-  return { status: "SUCCESS", message: "Customer added successfully." };
+  revalidatePath("/dashboard/invoices");
+  return { status: "SUCCESS", message: "Inoice created successfully." };
 };
 
-const editCustomer = async (editCustomerFormData: EditCustomerType) => {
-  const validatedFormData = EditCustomerSchema.safeParse(editCustomerFormData);
+const editInvoice = async (editInvoiceData: EditInvoiceType) => {
+  const validatedFormData = EditInvoiceSchema.safeParse(editInvoiceData);
 
   if (!validatedFormData.success) {
     let formFieldErrors: CustomerFormErrorsType = {};
@@ -67,12 +70,13 @@ const editCustomer = async (editCustomerFormData: EditCustomerType) => {
   }
 
   const dbEditCustomer = await db
-    .update(customers)
+    .update(invoices)
     .set({
-      name: validatedFormData.data.name,
-      email: validatedFormData.data.email,
+      status: validatedFormData.data.status,
+      date: validatedFormData.data.date,
+      amount: validatedFormData.data.amount,
     })
-    .where(eq(customers.id, validatedFormData.data.id));
+    .where(eq(invoices.id, validatedFormData.data.id));
 
   if (dbEditCustomer.rowsAffected == 0)
     return { status: "FAILED", message: "Unable to add customer. Try Again!" };
@@ -81,23 +85,23 @@ const editCustomer = async (editCustomerFormData: EditCustomerType) => {
   return { status: "SUCCESS", message: "Customer edited successfully." };
 };
 
-const deleteCustomer = async (formData: FormData) => {
-  const validatedFormData = DeleteCustomerSchema.safeParse({
+const deleteInvoice = async (formData: FormData) => {
+  const validatedFormData = DeleteInvoiceSchema.safeParse({
     id: formData.get("id"),
   });
 
   if (!validatedFormData.success)
-    return { status: "FAILED", message: "Unable to delete customer" };
+    return { status: "FAILED", message: "Unable to delete invoice" };
 
   const res = await db
-    .delete(customers)
-    .where(eq(customers.id, validatedFormData.data.id));
+    .delete(invoices)
+    .where(eq(invoices.id, validatedFormData.data.id));
 
   if (res.rowsAffected == 0)
-    return { status: "FAILED", message: "Unable to delete customer" };
+    return { status: "FAILED", message: "Unable to delete invoice" };
 
   revalidatePath("/dashboard/customers ");
-  return { status: "SUCCESS", message: "Customer removed successfully." };
+  return { status: "SUCCESS", message: "Invoice removed successfully." };
 };
 
-export { createCustomer, editCustomer, deleteCustomer };
+export { createInvoice, editInvoice, deleteInvoice };
