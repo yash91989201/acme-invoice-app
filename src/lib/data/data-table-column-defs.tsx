@@ -1,58 +1,20 @@
 "use client";
 import React from "react";
 import Image from "next/image";
+// UTILS
+import { cn } from "@/lib/utils";
 // TYPES
 import type { ColumnDef } from "@tanstack/react-table";
+import type { CustomerType, InvoiceType } from "@/lib/schema";
 // CUSTOM COMPONENTS
 import DeleteCustomerForm from "@/app/_components/delete-customer-form";
 import EditCustomerForm from "@/app/_components/edit-customer-form";
-import { cn } from "../utils";
-import { Check, Clock9 } from "lucide-react";
 import EditInvoiceForm from "@/app/_components/edit-invoice-form";
 import DeleteInvoiceForm from "@/app/_components/delete-invoice-form";
+// ICONS
+import { Check, Clock9 } from "lucide-react";
 
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
-// export type CustomerTableColumnType = {
-//   id: string;
-//   name: string;
-//   email: string;
-//   total_invoices: number;
-//   total_pending: number;
-//   total_paid: number;
-// };
-
-// export const columns: ColumnDef<CustomerTableColumnType>[] = [
-//   {
-//     accessorKey: "image",
-//     header: "",
-//   },
-//   {
-//     accessorKey: "name",
-//     header: "Name",
-//   },
-//   {
-//     accessorKey: "total_invoices",
-//     header: "Total Invoices",
-//   },
-//   {
-//     accessorKey: "total_pending",
-//     header: "Total Pending",
-//   },
-//   {
-//     accessorKey: "total_paid",
-//     header: "Total Paid",
-//   },
-// ];
-
-export type CustomerTableColumnType = {
-  id: string;
-  name: string;
-  email: string;
-  image: string;
-};
-
-export const customerTableColumns: ColumnDef<CustomerTableColumnType>[] = [
+const customerTableColumns: ColumnDef<CustomerType>[] = [
   {
     accessorKey: "name",
     header: "Name",
@@ -76,6 +38,18 @@ export const customerTableColumns: ColumnDef<CustomerTableColumnType>[] = [
     header: "Email",
   },
   {
+    accessorKey: "total_invoices",
+    header: "Total Invoices",
+  },
+  {
+    accessorKey: "total_paid",
+    header: "Total Paid",
+  },
+  {
+    accessorKey: "total_pending",
+    header: "Total Pending",
+  },
+  {
     accessorKey: "edit",
     header: "Actions",
     cell: ({ row }) => (
@@ -87,15 +61,11 @@ export const customerTableColumns: ColumnDef<CustomerTableColumnType>[] = [
   },
 ];
 
-export type InvoiceTableColumnType = {
-  id: string;
-  amount: number;
-  date: Date;
-  status: "pending" | "paid";
-  customer: CustomerTableColumnType;
+type InvoiceTableColumnType = InvoiceType & {
+  customer: CustomerType;
 };
 
-export const invoiceTableColumns: ColumnDef<InvoiceTableColumnType>[] = [
+const invoiceTableColumns: ColumnDef<InvoiceTableColumnType>[] = [
   {
     accessorKey: "name",
     header: "Name",
@@ -177,3 +147,6 @@ export const invoiceTableColumns: ColumnDef<InvoiceTableColumnType>[] = [
     ),
   },
 ];
+
+export type { InvoiceTableColumnType };
+export { customerTableColumns, invoiceTableColumns };

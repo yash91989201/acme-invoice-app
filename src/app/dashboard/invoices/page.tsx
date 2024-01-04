@@ -28,7 +28,7 @@ export default async function Invoices({
       <h5 className="text-lg font-semibold md:text-3xl">Invoices</h5>
       <div className="flex items-center gap-3 ">
         <InvoiceSearchBox />
-        <CreateInvoiceForm customers={customers} />
+        <CreateInvoiceForm customers={customers.customers} />
       </div>
       <div>
         <InvoiceTable
