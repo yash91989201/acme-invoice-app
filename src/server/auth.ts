@@ -1,9 +1,9 @@
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import { getServerSession } from "next-auth";
 import GithubProvider from "next-auth/providers/github";
-import type { DefaultSession, NextAuthOptions } from "next-auth";
+import type { DefaultSession } from "next-auth";
 import type { Adapter } from "next-auth/adapters";
-
+import type { AuthOptions } from "next-auth";
 import { db } from "@/server/db";
 import { env } from "@/env";
 import { mysqlTable } from "@/server/db/schema";
@@ -33,7 +33,7 @@ declare module "next-auth" {
  *
  */
 
-export const authOptions: NextAuthOptions = {
+export const authOptions: AuthOptions = {
   pages: {
     signIn: "/sign-in",
     signOut: "/dashboard/sign-out",
