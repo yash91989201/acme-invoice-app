@@ -1,12 +1,14 @@
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import { getServerSession } from "next-auth";
 import GithubProvider from "next-auth/providers/github";
+// UTILS
+import { env } from "@/env";
+import { db } from "@/server/db";
+import { mysqlTable } from "@/server/db/schema";
+// TYPES
 import type { DefaultSession } from "next-auth";
 import type { Adapter } from "next-auth/adapters";
 import type { AuthOptions } from "next-auth";
-import { db } from "@/server/db";
-import { env } from "@/env";
-import { mysqlTable } from "@/server/db/schema";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
