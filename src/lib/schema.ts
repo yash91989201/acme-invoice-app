@@ -72,6 +72,13 @@ const DeleteInvoiceSchema = z.object({
 });
 
 type CustomerType = z.infer<typeof CustomerSchema>;
+
+type CustomerWithInvoiceDataType = CustomerType & {
+  total_invoices: number;
+  total_pending: number;
+  total_paid: number;
+};
+
 type CreateCustomerType = z.infer<typeof CreateCustomerSchema>;
 type CreateCustomerWithImageType = z.infer<
   typeof CreateCustomerWithImageSchema
@@ -100,6 +107,7 @@ export {
 
 export type {
   CustomerType,
+  CustomerWithInvoiceDataType,
   CreateCustomerType,
   CreateCustomerWithImageType,
   DeleteCustomerType,

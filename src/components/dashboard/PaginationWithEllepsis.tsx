@@ -4,13 +4,15 @@ import { useSearchParams } from "next/navigation";
 import {
   Pagination,
   PaginationContent,
+  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import { cn, paginationWithEllepsis } from "@/lib/utils";
 
-export default function CustomerPagination({
+export default function PaginationWtihEllepsis({
   hasPreviousPage,
   hasNextPage,
   total_page,
@@ -20,9 +22,14 @@ export default function CustomerPagination({
   total_page: number;
 }) {
   const searchParams = useSearchParams();
-  console.log(total_page);
+
   const page = Number(searchParams.get("page") ?? "1");
   const per_page = Number(searchParams.get("per_page") ?? "5");
+
+  const paginatedItems = paginationWithEllepsis({
+    current: page,
+    max: total_page,
+  }).items;
 
   return (
     <Pagination>
@@ -35,13 +42,27 @@ export default function CustomerPagination({
           </PaginationItem>
         )}
 
-        {Array.from(Array(total_page).keys()).map((index) => (
-          <PaginationItem key={index}>
-            <PaginationLink href={`?page=${index + 1}&per_page=${per_page}`}>
-              {index + 1}
-            </PaginationLink>
-          </PaginationItem>
-        ))}
+        {paginatedItems.map((item, index) => {
+          if (item === "...")
+            return (
+              <PaginationItem>
+                <PaginationEllipsis />
+              </PaginationItem>
+            );
+          return (
+            <PaginationItem key={index}>
+              <PaginationLink
+                href={`?page=${index + 1}&per_page=${per_page}`}
+                className={cn(
+                  "bg-white",
+                  index + 1 === page && "bg-primary text-white",
+                )}
+              >
+                {index + 1}
+              </PaginationLink>
+            </PaginationItem>
+          );
+        })}
 
         {hasNextPage && (
           <PaginationItem>

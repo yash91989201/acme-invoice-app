@@ -1,16 +1,29 @@
 import { z } from "zod";
 import { eq, like, sql } from "drizzle-orm";
+import { initEdgeStore } from "@edgestore/server";
+import { initEdgeStoreClient } from "@edgestore/server/core";
 // UTILS
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 // SCHEMAS
 import { customers, invoices } from "@/server/db/schema";
 import { CustomerSchema, DeleteCustomerSchema } from "@/lib/schema";
+// TYPES
+import type { CustomerType } from "@/lib/schema";
+
+const es = initEdgeStore.create();
+const edgeStoreRouter = es.router({
+  publicFiles: es.fileBucket(),
+});
+
+const edgeStoreBackendClient = initEdgeStoreClient({
+  router: edgeStoreRouter,
+});
 
 const customerRouter = createTRPCRouter({
   create: publicProcedure
     .input(CustomerSchema)
     .mutation(async ({ ctx, input }) => {
-      await ctx.db.insert(customers).values({ ...input });
+      await ctx.db.insert(customers).values(input);
     }),
 
   getAll: publicProcedure
@@ -91,13 +104,21 @@ const customerRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       await ctx.db
         .update(customers)
-        .set({ ...input })
+        .set(input)
         .where(eq(customers.id, input.id));
     }),
 
   delete: publicProcedure
     .input(DeleteCustomerSchema)
     .mutation(async ({ ctx, input }) => {
+      const customer = (await ctx.db.query.customers.findFirst({
+        where: eq(customers.id, input.id),
+      })) as CustomerType;
+
+      await edgeStoreBackendClient.publicFiles.deleteFile({
+        url: customer.image,
+      });
+
       await ctx.db.delete(customers).where(eq(customers.id, input.id));
     }),
 });
