@@ -39,7 +39,7 @@ export default function SignOutModal() {
           <DialogTitle>Are you sure you want to Sign Out ?</DialogTitle>
         </DialogHeader>
         <p>After signing out you will be taken to our landing page.</p>
-        <DialogFooter>
+        <DialogFooter className="gap-3 sm:gap-0">
           <Button variant="outline" onClick={signOutModal.close}>
             No, Step Back
           </Button>

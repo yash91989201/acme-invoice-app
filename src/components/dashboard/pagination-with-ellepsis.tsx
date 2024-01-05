@@ -32,42 +32,36 @@ export default function PaginationWtihEllepsis({
   }).items;
 
   return (
-    <Pagination>
+    <Pagination className="mx-0 w-fit">
       <PaginationContent>
         {hasPreviousPage && (
-          <PaginationItem>
-            <PaginationPrevious
-              href={`?page=${page - 1}&per_page=${per_page}`}
-            />
-          </PaginationItem>
+          <PaginationPrevious href={`?page=${page - 1}&per_page=${per_page}`} />
         )}
 
         {paginatedItems.map((item, index) => {
           if (item === "...")
             return (
-              <PaginationItem>
+              <PaginationItem key={index}>
                 <PaginationEllipsis />
               </PaginationItem>
             );
+
           return (
-            <PaginationItem key={index}>
-              <PaginationLink
-                href={`?page=${index + 1}&per_page=${per_page}`}
-                className={cn(
-                  "bg-white",
-                  index + 1 === page && "bg-primary text-white",
-                )}
-              >
-                {index + 1}
-              </PaginationLink>
-            </PaginationItem>
+            <PaginationLink
+              key={index}
+              href={`?page=${index + 1}&per_page=${per_page}`}
+              className={cn(
+                "bg-white",
+                index + 1 === page && "bg-primary text-white",
+              )}
+            >
+              {index + 1}
+            </PaginationLink>
           );
         })}
 
         {hasNextPage && (
-          <PaginationItem>
-            <PaginationNext href={`?page=${page + 1}&per_page=${per_page}`} />
-          </PaginationItem>
+          <PaginationNext href={`?page=${page + 1}&per_page=${per_page}`} />
         )}
       </PaginationContent>
     </Pagination>

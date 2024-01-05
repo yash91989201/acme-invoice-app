@@ -30,13 +30,13 @@ const customerRouter = createTRPCRouter({
     .input(
       z.object({
         query: z.string().optional().default(""),
-        page: z.number().optional().default(1),
-        per_page: z.number().optional().default(5),
+        page: z.number().optional(),
+        per_page: z.number().optional(),
       }),
     )
     .query(async ({ ctx, input }) => {
       let customersQuery;
-      const { query, page, per_page } = input;
+      const { query, page = 0, per_page = 0 } = input;
 
       if (query.length === 0) {
         customersQuery = ctx.db
@@ -84,18 +84,27 @@ const customerRouter = createTRPCRouter({
       const fetchedCustomers = await customersQuery.execute();
 
       // pagination logic
-      const start = (page - 1) * per_page;
-      const end = start + per_page;
-      const paginatedCustomerData =
-        fetchedCustomers.length < per_page
-          ? fetchedCustomers
-          : fetchedCustomers.slice(start, end);
+      if (page > 0 && per_page > 0) {
+        const start = (page - 1) * per_page;
+        const end = start + per_page;
+        const paginatedCustomerData =
+          fetchedCustomers.length < per_page
+            ? fetchedCustomers
+            : fetchedCustomers.slice(start, end);
+
+        return {
+          customers: paginatedCustomerData,
+          hasPreviousPage: start > 0,
+          hasNextPage: end < fetchedCustomers.length,
+          total_page: Math.ceil(fetchedCustomers.length / per_page),
+        };
+      }
 
       return {
-        customers: paginatedCustomerData,
-        hasPreviousPage: start > 0,
-        hasNextPage: end < fetchedCustomers.length,
-        total_page: Math.ceil(fetchedCustomers.length / per_page),
+        customers: fetchedCustomers,
+        hasPreviousPage: false,
+        hasNextPage: false,
+        total_page: 0,
       };
     }),
 

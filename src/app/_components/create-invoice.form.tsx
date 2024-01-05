@@ -147,7 +147,7 @@ export default function CreateInvoiceForm({
                       <Command>
                         <CommandInput placeholder="Search Customer ..." />
                         <CommandEmpty>No Customers Available</CommandEmpty>
-                        <ScrollArea className="max-h-60 min-h-fit w-full overflow-auto">
+                        <ScrollArea className="h-40 w-full overflow-auto">
                           <CommandGroup>
                             {customers?.map((customer) => (
                               <CommandItem

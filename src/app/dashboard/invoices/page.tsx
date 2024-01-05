@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 // UTILS
 import { api } from "@/trpc/server";
 // TYPES
@@ -5,10 +6,11 @@ import type { InvoiceTableColumnType } from "@/lib/data/data-table-column-defs";
 // CUSTOM COMPONENTS
 import InvoiceTable from "@/components/ui/data-table";
 import InvoiceSearchBox from "@/app/_components/url-search-box";
+import RowsPerPage from "@/components/dashboard/rows-per-page";
+import PaginationWtihEllepsis from "@/components/dashboard/pagination-with-ellepsis";
 // CONSTANTS
 import { invoiceTableColumns } from "@/lib/data/data-table-column-defs";
 import CreateInvoiceForm from "@/app/_components/create-invoice.form";
-import PaginationWtihEllepsis from "@/components/dashboard/PaginationWithEllepsis";
 
 export default async function Invoices({
   searchParams,
@@ -26,10 +28,13 @@ export default async function Invoices({
     per_page: Number(per_page),
   });
 
+  if (page > invoices.total_page && invoices.invoices.length !== 0)
+    redirect(`?page=${invoices.total_page}&per_page=${per_page}`);
+
   return (
     <div className="flex flex-col gap-6">
       <h5 className="text-lg font-semibold md:text-3xl">Invoices</h5>
-      <div className="flex items-center gap-3 ">
+      <div className="flex flex-col  gap-3 sm:flex-row sm:items-center ">
         <InvoiceSearchBox />
         <CreateInvoiceForm customers={customers.customers} />
       </div>
@@ -39,13 +44,16 @@ export default async function Invoices({
           data={invoices.invoices as InvoiceTableColumnType[]}
         />
       </div>
-      {invoices.invoices.length > per_page && (
-        <PaginationWtihEllepsis
-          hasPreviousPage={invoices.hasPreviousPage}
-          hasNextPage={invoices.hasNextPage}
-          total_page={invoices.total_page}
-        />
-      )}
+      <div className="flex flex-col-reverse items-center gap-6 empty:hidden lg:flex-row lg:justify-end lg:gap-12">
+        {invoices.invoices.length !== 0 && <RowsPerPage per_page={per_page} />}
+        {invoices.total_page > 1 && (
+          <PaginationWtihEllepsis
+            hasPreviousPage={invoices.hasPreviousPage}
+            hasNextPage={invoices.hasNextPage}
+            total_page={invoices.total_page}
+          />
+        )}
+      </div>
     </div>
   );
 }
