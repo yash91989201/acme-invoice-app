@@ -2,8 +2,8 @@ import NextAuth from "next-auth";
 // AUTH
 import { authOptions } from "@/server/auth";
 // TYPES
-import type { NextAuthOptions } from "next-auth";
+import type { AuthOptions } from "next-auth";
 
-const handler = NextAuth(authOptions) as NextAuthOptions;
+const handler = NextAuth(authOptions) as AuthOptions;
 
 export { handler as GET, handler as POST };
