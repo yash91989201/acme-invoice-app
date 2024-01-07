@@ -50,4 +50,22 @@ function renderOnClient<T>(Component: FunctionComponent<T>) {
   return dynamic(() => Promise.resolve(Component), { ssr: false });
 }
 
-export { cn, renderOnClient, paginationWithEllepsis };
+function formatAmount(amount: number): string {
+  const formattedAmount = new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+  }).format(amount);
+
+  return formattedAmount;
+}
+
+function formatDate(date: Date): string {
+  const formattedDate = new Intl.DateTimeFormat("en-IN", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  }).format(date);
+  return formattedDate;
+}
+
+export { cn, renderOnClient, paginationWithEllepsis, formatAmount, formatDate };

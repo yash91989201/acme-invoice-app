@@ -1,6 +1,9 @@
 "use client";
 // CUSTOM HOOKS
 import { useSearchParams } from "next/navigation";
+// UTILS
+import { cn, paginationWithEllepsis } from "@/lib/utils";
+// CUSTOM COMPONENTS
 import {
   Pagination,
   PaginationContent,
@@ -10,7 +13,6 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import { cn, paginationWithEllepsis } from "@/lib/utils";
 
 export default function PaginationWtihEllepsis({
   hasPreviousPage,
@@ -26,6 +28,15 @@ export default function PaginationWtihEllepsis({
   const page = Number(searchParams.get("page") ?? "1");
   const per_page = Number(searchParams.get("per_page") ?? "5");
 
+  const generateRouteParams = (page: number) => {
+    const params = new URLSearchParams(searchParams);
+
+    params.set("page", page.toString());
+    params.set("per_page", per_page.toString());
+
+    return `?${params?.toString()}`;
+  };
+
   const paginatedItems = paginationWithEllepsis({
     current: page,
     max: total_page,
@@ -35,7 +46,7 @@ export default function PaginationWtihEllepsis({
     <Pagination className="mx-0 w-fit">
       <PaginationContent>
         {hasPreviousPage && (
-          <PaginationPrevious href={`?page=${page - 1}&per_page=${per_page}`} />
+          <PaginationPrevious href={generateRouteParams(page - 1)} />
         )}
 
         {paginatedItems.map((item, index) => {
@@ -49,7 +60,7 @@ export default function PaginationWtihEllepsis({
           return (
             <PaginationLink
               key={index}
-              href={`?page=${index + 1}&per_page=${per_page}`}
+              href={generateRouteParams(index + 1)}
               className={cn(
                 "bg-white",
                 index + 1 === page && "bg-primary text-white",
@@ -60,9 +71,7 @@ export default function PaginationWtihEllepsis({
           );
         })}
 
-        {hasNextPage && (
-          <PaginationNext href={`?page=${page + 1}&per_page=${per_page}`} />
-        )}
+        {hasNextPage && <PaginationNext href={generateRouteParams(page + 1)} />}
       </PaginationContent>
     </Pagination>
   );

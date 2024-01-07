@@ -2,19 +2,22 @@
 import React from "react";
 import Image from "next/image";
 // UTILS
-import { cn } from "@/lib/utils";
+import { cn, formatAmount, formatDate } from "@/lib/utils";
 // TYPES
 import type { ColumnDef } from "@tanstack/react-table";
-import type { CustomerType, InvoiceType } from "@/lib/schema";
+import type {
+  CustomerType as CustomerTableColumnType,
+  InvoiceWithCustomerType as InvoiceTableColumnType,
+} from "@/lib/schema";
 // CUSTOM COMPONENTS
-import DeleteCustomerForm from "@/app/_components/delete-customer-form";
-import EditCustomerForm from "@/app/_components/edit-customer-form";
 import EditInvoiceForm from "@/app/_components/edit-invoice-form";
+import EditCustomerForm from "@/app/_components/edit-customer-form";
 import DeleteInvoiceForm from "@/app/_components/delete-invoice-form";
+import DeleteCustomerForm from "@/app/_components/delete-customer-form";
 // ICONS
 import { Check, Clock9 } from "lucide-react";
 
-const customerTableColumns: ColumnDef<CustomerType>[] = [
+const customerTableColumns: ColumnDef<CustomerTableColumnType>[] = [
   {
     accessorKey: "name",
     header: "Name",
@@ -61,10 +64,6 @@ const customerTableColumns: ColumnDef<CustomerType>[] = [
   },
 ];
 
-type InvoiceTableColumnType = InvoiceType & {
-  customer: CustomerType;
-};
-
 const invoiceTableColumns: ColumnDef<InvoiceTableColumnType>[] = [
   {
     accessorKey: "name",
@@ -91,50 +90,34 @@ const invoiceTableColumns: ColumnDef<InvoiceTableColumnType>[] = [
   {
     accessorKey: "amount",
     header: "Amount",
-    cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("amount"));
-      const formattedAmount = new Intl.NumberFormat("en-IN", {
-        style: "currency",
-        currency: "INR",
-      }).format(amount);
-
-      return <p className="font-medium">{formattedAmount}</p>;
-    },
+    cell: ({ row }) => (
+      <p className="font-medium">{formatAmount(row.original.amount)}</p>
+    ),
   },
   {
     accessorKey: "date",
     header: "Date",
-    cell: ({ row }) => {
-      const originalDate = new Date(row.getValue("date"));
-
-      const formattedDate = new Intl.DateTimeFormat("en-IN", {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-      }).format(originalDate);
-
-      return <p className="min-w-36 font-medium">{formattedDate}</p>;
-    },
+    cell: ({ row }) => (
+      <p className="min-w-36 font-medium">{formatDate(row.original.date)}</p>
+    ),
   },
   {
     accessorKey: "status",
     header: "Status",
-    cell: ({ row }) => {
-      const status = row.original.status;
-      return (
-        <div
-          className={cn(
-            "flex w-fit select-none items-center justify-center gap-3 rounded-full px-3 py-1 [&>svg]:size-4",
-            status === "paid"
-              ? "bg-green-100 text-green-500"
-              : "bg-red-100 text-red-500",
-          )}
-        >
-          {status === "paid" ? <Check /> : <Clock9 />}
-          <p>{status}</p>
-        </div>
-      );
-    },
+    cell: ({ row }) => (
+      <div
+        className={cn(
+          "flex w-fit select-none items-center justify-center gap-2 rounded-full px-3 py-1 [&>svg]:size-4",
+          row.original.status === "paid"
+            ? "bg-green-100 text-green-500 [&>.pending-icon]:hidden"
+            : "bg-red-100 text-red-500 [&>.paid-icon]:hidden",
+        )}
+      >
+        <Check className="paid-icon" />
+        <Clock9 className="pending-icon" />
+        <p>{row.original.status}</p>
+      </div>
+    ),
   },
   {
     accessorKey: "edit",
@@ -148,5 +131,4 @@ const invoiceTableColumns: ColumnDef<InvoiceTableColumnType>[] = [
   },
 ];
 
-export type { InvoiceTableColumnType };
 export { customerTableColumns, invoiceTableColumns };

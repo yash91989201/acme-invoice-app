@@ -88,6 +88,9 @@ type EditCustomerType = z.infer<typeof EditCustomerSchema>;
 type DeleteCustomerType = z.infer<typeof DeleteCustomerSchema>;
 
 type InvoiceType = z.infer<typeof InvoiceSchema>;
+type InvoiceWithCustomerType = InvoiceType & {
+  customer: CustomerType;
+};
 type CreateInvoiceType = z.infer<typeof CreateInvoiceSchema>;
 type CreateInvoiceFormInputType = Omit<CreateInvoiceType, "id">;
 type EditInvoiceType = z.infer<typeof EditInvoiceSchema>;
@@ -113,6 +116,7 @@ export type {
   DeleteCustomerType,
   EditCustomerType,
   InvoiceType,
+  InvoiceWithCustomerType,
   CreateInvoiceType,
   CreateInvoiceFormInputType,
   EditInvoiceType,

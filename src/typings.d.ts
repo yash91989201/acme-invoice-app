@@ -64,4 +64,16 @@ type DeleteInvoiceFormStatusType = {
   message: string;
 };
 
+type InvoiceStatsType = {
+  total_paid: number;
+  total_pending: number;
+  total_invoices: number;
+};
+
+type CustomerStatsType = {
+  total_customers: number;
+};
+
+type RevenueType = Record<string, number>;
+
 type ModifyType<T, R> = Omit<T, keyof R> & R;

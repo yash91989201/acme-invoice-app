@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 // UTILS
 import { api } from "@/trpc/server";
 // TYPES
-import type { InvoiceTableColumnType } from "@/lib/data/data-table-column-defs";
+import type { InvoiceWithCustomerType as InvoiceTableColumnType } from "@/lib/schema";
 // CUSTOM COMPONENTS
 import InvoiceTable from "@/components/ui/data-table";
 import InvoiceSearchBox from "@/app/_components/url-search-box";

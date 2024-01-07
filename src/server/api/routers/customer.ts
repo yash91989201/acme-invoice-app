@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { eq, like, sql } from "drizzle-orm";
+import { eq, like, sql, count } from "drizzle-orm";
 import { initEdgeStore } from "@edgestore/server";
 import { initEdgeStoreClient } from "@edgestore/server/core";
 // UTILS
@@ -107,6 +107,14 @@ const customerRouter = createTRPCRouter({
         total_page: 0,
       };
     }),
+
+  getCount: publicProcedure.query(({ ctx }) => {
+    return ctx.db
+      .select({
+        total_customers: count(customers.id).mapWith(Number),
+      })
+      .from(customers);
+  }),
 
   update: publicProcedure
     .input(CustomerSchema)
