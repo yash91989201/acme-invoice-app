@@ -29,7 +29,7 @@ export default function InvoiceGraph({ revenue }: { revenue: RevenueType }) {
               labels: revenueData.map((data) => data.label.toUpperCase()),
               datasets: [
                 {
-                  label: "Revenue",
+                  label: "Revenue (in Rs.)",
                   data: revenueData.map((data) => data.value),
                   backgroundColor: "#2563eb99",
                   borderRadius: 4,
