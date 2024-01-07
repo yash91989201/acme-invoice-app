@@ -91,6 +91,8 @@ type InvoiceType = z.infer<typeof InvoiceSchema>;
 type InvoiceWithCustomerType = InvoiceType & {
   customer: CustomerType;
 };
+
+type InvoiceTableColumnType = InvoiceWithCustomerType;
 type CreateInvoiceType = z.infer<typeof CreateInvoiceSchema>;
 type CreateInvoiceFormInputType = Omit<CreateInvoiceType, "id">;
 type EditInvoiceType = z.infer<typeof EditInvoiceSchema>;
@@ -117,6 +119,7 @@ export type {
   EditCustomerType,
   InvoiceType,
   InvoiceWithCustomerType,
+  InvoiceTableColumnType,
   CreateInvoiceType,
   CreateInvoiceFormInputType,
   EditInvoiceType,
