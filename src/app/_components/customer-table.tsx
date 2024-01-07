@@ -1,8 +1,12 @@
-import { api } from "@/trpc/server";
 import { redirect } from "next/navigation";
-import DataTable from "@/components/ui/data-table";
+// UTILS
+import { api } from "@/trpc/server";
+// SCHEMAS
 import { customerTableColumns } from "@/lib/data/data-table-column-defs";
+// TYPES
 import type { CustomerWithInvoiceDataType } from "@/lib/schema";
+// CUSTOM COMPONENTS
+import DataTable from "@/components/ui/data-table";
 import RowsPerPage from "@/components/dashboard/rows-per-page";
 import PaginationWtihEllepsis from "@/components/dashboard/pagination-with-ellepsis";
 
@@ -45,3 +49,29 @@ export default async function CustomerTable({
     </>
   );
 }
+
+function CustomerTableSkeleton() {
+  return (
+    <div className="overflow-x-auto rounded-md border border-gray-200 bg-gray-100">
+      <div className=" rounded-md bg-white ">
+        <div className="flex items-center justify-around border-b border-gray-200 bg-white p-3 text-sm font-semibold text-gray-700">
+          <p>Name</p>
+          <p>Email</p>
+          <p>Total Invoices</p>
+          <p>Total Paid</p>
+          <p>Actions</p>
+        </div>
+      </div>
+
+      <div className="flex flex-col gap-3 bg-white p-3">
+        <div className="h-14 w-full animate-pulse rounded-md  bg-gray-100"></div>
+        <div className="h-14 w-full animate-pulse rounded-md  bg-gray-100"></div>
+        <div className="h-14 w-full animate-pulse rounded-md  bg-gray-100"></div>
+        <div className="h-14 w-full animate-pulse rounded-md  bg-gray-100"></div>
+        <div className="h-14 w-full animate-pulse rounded-md  bg-gray-100"></div>
+      </div>
+    </div>
+  );
+}
+
+export { CustomerTableSkeleton };

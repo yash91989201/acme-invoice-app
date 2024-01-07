@@ -15,8 +15,8 @@ export default function NavLinks() {
             href={nav.href}
             className={`flex w-full items-center  gap-3 rounded-md  p-3 ${
               currentRoute === nav.href
-                ? "bg-blue-100 text-blue-600"
-                : "bg-transparent hover:bg-blue-100 hover:text-blue-600"
+                ? "bg-blue-50 text-primary"
+                : "bg-transparent hover:bg-blue-50 hover:text-primary"
             }`}
           >
             <nav.Icon className="size-5" />

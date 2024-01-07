@@ -1,6 +1,8 @@
 import { Suspense } from "react";
 // CUSTOM COMPONENTS
-import CustomerTable from "@/app/_components/customer-table";
+import CustomerTable, {
+  CustomerTableSkeleton,
+} from "@/app/_components/customer-table";
 import CustomerSearchBox from "@/app/_components/url-search-box";
 import CreateCustomerForm from "@/app/_components/create-customer-form";
 
@@ -16,7 +18,7 @@ export default async function Customers({
         <CustomerSearchBox />
         <CreateCustomerForm />
       </div>
-      <Suspense fallback={<p>customer table loading</p>}>
+      <Suspense fallback={<CustomerTableSkeleton />}>
         <CustomerTable searchParams={searchParams} />
       </Suspense>
     </div>

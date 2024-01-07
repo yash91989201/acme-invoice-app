@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
-//  ACTIONS
+// ACTIONS
 import { createCustomer } from "@/server/actions/customer";
 // CUSTOM HOOKS
 import useToggle from "@/hooks/use-toggle";

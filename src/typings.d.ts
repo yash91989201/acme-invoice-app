@@ -76,4 +76,9 @@ type CustomerStatsType = {
 
 type RevenueType = Record<string, number>;
 
+type RevenueGraphDataType = {
+  label: string;
+  value: number;
+};
+
 type ModifyType<T, R> = Omit<T, keyof R> & R;

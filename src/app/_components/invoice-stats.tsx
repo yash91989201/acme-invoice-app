@@ -31,7 +31,7 @@ export default async function InvoiceStats() {
   );
 }
 
-const StatCard = ({ title, value }: { title: string; value: string }) => {
+function StatCard({ title, value }: { title: string; value: string }) {
   return (
     <div className="flex flex-col gap-3 rounded-lg bg-gray-100 p-3 ">
       <p className="text-sm sm:text-base">{title}</p>
@@ -40,4 +40,29 @@ const StatCard = ({ title, value }: { title: string; value: string }) => {
       </p>
     </div>
   );
-};
+}
+
+function InvoiceStatsSkeleton() {
+  return (
+    <div className="grid  h-36 grid-cols-2  gap-3 sm:gap-6 lg:grid-cols-4">
+      <div className="flex animate-pulse flex-col gap-3 rounded-lg bg-gray-100 p-3">
+        <p className="text-sm sm:text-base">Total Collected</p>
+        <p className="h-full rounded-lg bg-white p-3 text-center  font-semibold sm:text-lg md:p-6"></p>
+      </div>
+      <div className="flex animate-pulse flex-col gap-3 rounded-lg bg-gray-100 p-3">
+        <p className="text-sm sm:text-base">Total Pending</p>
+        <p className="h-full rounded-lg bg-white p-3 text-center  font-semibold sm:text-lg md:p-6"></p>
+      </div>
+      <div className="flex animate-pulse flex-col gap-3 rounded-lg bg-gray-100 p-3">
+        <p className="text-sm sm:text-base">Total Invoices</p>
+        <p className="h-full rounded-lg bg-white p-3 text-center  font-semibold sm:text-lg md:p-6"></p>
+      </div>
+      <div className="flex animate-pulse flex-col gap-3 rounded-lg bg-gray-100 p-3">
+        <p className="text-sm sm:text-base">Total Customers</p>
+        <p className="h-full rounded-lg bg-white p-3 text-center  font-semibold sm:text-lg md:p-6"></p>
+      </div>
+    </div>
+  );
+}
+
+export { InvoiceStatsSkeleton };

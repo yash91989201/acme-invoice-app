@@ -1,18 +1,14 @@
-// UTILS
-import { getServerAuthSession } from "@/server/auth";
 // TYPES
-import type { ReactNode } from "react";
+import { Suspense, type ReactNode } from "react";
 // CUSTOM COMPONENTS
 import SideNav from "@/app/_components/side-nav";
-import NotSignedInModal from "@/app/_components/not-signed-in-modal";
+import NotSignedIn from "../_components/not-signed-in";
 
 export default async function DashboardLayout({
   children,
 }: {
   children: ReactNode;
 }) {
-  const session = await getServerAuthSession();
-
   return (
     <>
       <div className="flex h-screen flex-col md:flex-row md:overflow-hidden">
@@ -20,7 +16,10 @@ export default async function DashboardLayout({
           <SideNav />
         </div>
         <div className="flex-grow p-6 md:overflow-y-auto md:p-12">
-          {session == null ? <NotSignedInModal /> : children}
+          <Suspense>
+            <NotSignedIn />
+          </Suspense>
+          {children}
         </div>
       </div>
     </>

@@ -1,8 +1,12 @@
 import { Suspense } from "react";
 // CUSTOM COMPONENTS
-import InvoiceTable from "@/app/_components/invoice-table";
+import InvoiceTable, {
+  InvoiceTableSkeleton,
+} from "@/app/_components/invoice-table";
 import InvoiceSearchBox from "@/app/_components/url-search-box";
-import CreateInvoice from "@/app/_components/create-invoice";
+import CreateInvoice, {
+  CreateInvoiceSkeleton,
+} from "@/app/_components/create-invoice";
 
 export default async function Invoices({
   searchParams,
@@ -14,11 +18,11 @@ export default async function Invoices({
       <h5 className="text-lg font-semibold md:text-3xl">Invoices</h5>
       <div className="flex flex-col  gap-3 sm:flex-row sm:items-center ">
         <InvoiceSearchBox />
-        <Suspense fallback={<p>create invoice</p>}>
+        <Suspense fallback={<CreateInvoiceSkeleton />}>
           <CreateInvoice />
         </Suspense>
       </div>
-      <Suspense fallback={<p>loading invoice table</p>}>
+      <Suspense fallback={<InvoiceTableSkeleton />}>
         <InvoiceTable searchParams={searchParams} />
       </Suspense>
     </div>

@@ -7,20 +7,15 @@ import {
   LinearScale,
   Tooltip,
 } from "chart.js/auto";
-// ICONS
 
+// REGISTER CHARTJS CONFIG
 ChartJS.register(Tooltip, BarElement, LinearScale, CategoryScale);
 ChartJS.defaults.scale.grid.display = false;
-
-type GraphDataType = {
-  label: string;
-  value: number;
-};
 
 export default function RevenueBarGraph({
   graphData,
 }: {
-  graphData: GraphDataType[];
+  graphData: RevenueGraphDataType[];
 }) {
   return (
     <Bar
