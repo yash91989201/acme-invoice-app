@@ -14,7 +14,7 @@ export default async function Customers({
   return (
     <div className="flex flex-col gap-6">
       <h5 className="text-lg font-semibold md:text-3xl">Customers</h5>
-      <div className="flex items-center gap-3 ">
+      <div className="flex flex-col items-center gap-3 sm:flex-row">
         <CustomerSearchBox />
         <CreateCustomerForm />
       </div>
